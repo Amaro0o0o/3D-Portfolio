@@ -69,10 +69,18 @@ function init() {
     clock = new THREE.Clock();
     stats = new Stats();
     document.body.appendChild(stats.dom);
+    const testBox = new THREE.Mesh(
+  new THREE.BoxGeometry(1,1,1),
+  new THREE.MeshStandardMaterial({ color: 0xff0000 })
+);
+scene.add(testBox);
+
 
     // Load model
     const loader = new GLTFLoader();
-    loader.load(new URL('./gltf/scooter.glb', import.meta.url).href, gltf => {
+    const modelURL = './gltf/Scooter.glb';
+    loader.load(modelURL,
+    gltf => {
         scene.add(gltf.scene);
         // TODO: add your mixers/skeleton setup here
         activeCamera = camera;
