@@ -133,31 +133,26 @@ scene.add(bounceLight);
     clock = new THREE.Clock();
     stats = new Stats();
     document.body.appendChild(stats.dom);
+const loader = new GLTFLoader();
+const modelPath = new URL('./models/gltf/learning1.glb', import.meta.url);
 
-    const loader = new GLTFLoader();
-    const modelURL = '/3D-PORTFOLIO/gltf/pickup.glb';
-    console.log("Loading model from:", modelURL);
+loader.load(
+    modelPath.href,
+    (gltf) => {
+        const model = gltf.scene;
+        scene.add(model);
 
-    loader.load(
-        modelURL,
-        gltf => {
-            console.log("Model Loaded:", gltf);
+        // optional but safe
+        gltfAnimations = gltf.animations;
 
-            gltf.scene.traverse(obj => {
-                if (obj.isMesh) {
-                    obj.castShadow = true;
-                    obj.receiveShadow = true;
-                }
-            });
-
-            scene.add(gltf.scene);
-            activeCamera = camera;
-
-            createPanel();
-        },
-        undefined,
-        error => console.error("Error loading model:", error)
-    );
+        console.log('Model loaded successfully');
+    },
+    undefined,
+    (error) => {
+        console.error('Error loading model:', error);
+    }
+);
+    createPanel();
 
     window.addEventListener('resize', onWindowResize);
 }
